@@ -1,0 +1,176 @@
+Setelah style.css, selanjutnya file index.php
+
+file index.php adalah penting, karena file ini adalah penting ? weleh.
+
+-----------------------------------------------------------------------------------------------------------
+
+[disclaimer]
+
+Untuk mengikuti tutorial ini, diharapkan Anda minimal sudah paham dengan WordPress.
+
+Jadi, yang basic-basic nya tidak saya jelaskan lagi.
+
+[/disclaimer]
+
+-----------------------------------------------------------------------------------------------------------
+
+Struktur umum dari index.php adalah sebagai berikut.
+
+* header
+
+* menu
+
+* mainsection
+
+* comment
+
+* sidebar
+
+* footer
+
+Sepertinya tidak perlu dijelaskan satu persatu, I know, people hate to read. Langsung praktek aja.
+
+Struktur ini menggunakan HTML5, buat yang udah paham HTML5 tolong dikoreksi kode berikut jika ada salah.
+
+<!DOCTYPE HTML>
+
+<html lang="en-US">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+
+    <?php wp_title( '|', true, 'right' );
+
+    bloginfo( 'name' );
+
+    ?></title>
+
+     <link href="<?php bloginfo('stylesheet_url');?>" rel="stylesheet">
+
+    <?php wp_head();?>
+
+</head>
+
+<body>
+
+    <header>
+
+        <hgroup>
+
+            <h1><?php bloginfo('name');?></h1>
+
+            <h2><?php bloginfo('description');?></h2>
+
+        </hgroup>
+
+    </header>
+
+    <nav>
+
+        <?php wp_nav_menu()?>
+
+    </nav>
+
+    <section id="maincontent">
+
+        <?php if(have_posts()) : while(have_posts()) : the_post();?>
+
+        <article>
+
+            <header>
+
+                <h1><?php the_title();?></h1>
+
+            </header>
+
+            <?php the_content();?>
+
+        </article>
+
+        <?php
+
+            endwhile;
+
+            else :         
+
+        ?>
+
+            <h1>Not found</h1>
+
+        <?php
+
+            endif;
+
+        ?>
+
+        <section id="comments">
+
+            <?php comments_template( '', true ); ?>
+
+        </section>
+
+    </section>
+
+    <aside>
+
+        <?php dynamic_sidebar();?>
+
+    </aside>
+
+    <footer>
+
+        <p>Copyright &copy; <?php echo date('Y');?> - <?php bloginfo('name');?></p>
+
+    </footer>
+
+    <?php
+
+        wp_footer();
+
+    ?>
+
+</body>
+
+</html>
+
+Seperti biasa, saya tidak akan menjelaskan HTML dan atau CSS nya di sini. Tapi cukup PHP nya aja ya.
+
+* wp_title() , menampilkan judul dokumen, judul akan tertera pada title bar browser, peletakannya biasanya di dalam tag <title></title>
+
+* bloginfo('whatever'), menampilkan berbagai info blog, seperti nama blog, deskripsi dll. selengkapnya mengenai bloginfo(), silakan merujuk ke http://codex.wordpress.org/Function_Reference/bloginfo
+
+* wp_head(), ini untuk memanggil hook do_action('wp_head"); yang fungsinya macem-macem, contohnya untuk menempatkan script maupun stylesheet secara dinamis melalui plugin dsb.
+
+* wp_nav_menu(); ini untuk menampilkan menu, karena terlalu kompleks maka untuk detailnya akan dijelaskan di kesempatan lain.
+
+* the_title(), menampilkan judul blogpost atau page
+
+* the_content(), menampikan isi post/page
+
+* comments_template( '', true ); untuk menampikan comment form. Comment form hanya akan muncul jika berada di single post/page.
+
+* dynamic_sidebar(); menampilkan widget sidebar dinamis, akan dijelaskan di kesempatan lain.
+
+* wp_footer(); hampir sama dengan wp_head(), beda nya karena letaknya di bawah.
+
+* <?php if(have_posts()) : while(have_posts()) : the_post();?>
+
+// content, title, comment, etc
+
+<?php  endwhile;   else :  ?>
+
+// pesan not found.
+
+ <?php endif;  ?>
+
+Wow apaan itu bro?, hehe, itu adalah WP Loop, wp loop itu apa ya... nganu...
+
+Nah itu penting, untuk memanggil isi post dari database ke dalam template.
+
+Kacau kode nya, oke, udah ane upload di Google Docs:
+
+https://docs.google.com/folder/d/0B9kp0euLs-_VX3ZKZmp6QXhiaVE/edit
+
